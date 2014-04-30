@@ -26,43 +26,45 @@ public interface BalanceAccountService {
 
     /**
      * Activates an inactive account.
-     * 
+     *
      * @param accountId
-     *            The ID of the account to activate.
+     *            the ID of the account to activate.
+     * @return the number of activated accounts
      */
-    void activateAccount(long accountId);
+    long activateAccount(long accountId);
 
     /**
      * Creates an active/inactive account.
-     * 
+     *
      * @param ownerResourceId
-     *            The resource ID of the owner of the account.
+     *            The resource ID of the owner of the account, if <code>null</code> a new resource will be created.
      * @param active
      *            To create an active or an inactive account.
      * @return The ID of the created account.
      */
-    long createAccount(long ownerResourceId, boolean active);
+    long createAccount(Long ownerResourceId, boolean active);
 
     /**
      * Deactivates an active account.
-     * 
+     *
      * @param accountId
      *            The ID of the account to deactivate.
+     * @return the number of activated accounts
      */
-    void deactivateAccount(long accountId);
+    long deactivateAccount(long accountId);
 
     /**
      * Finds an account by its id.
-     * 
+     *
      * @param accountId
      *            The id of the account to be found.
-     * @return An {@link Account} or null if there is no matches.
+     * @return An {@link Account} or <code>null</code> if there is no matches.
      */
     BalanceAccount findAccountById(long accountId);
 
     /**
      * Finds an account by its resource id.
-     * 
+     *
      * @param resourceId
      *            the resource id of the account to be found
      * @return the account or <code>null</code> if there is no matches
@@ -71,12 +73,12 @@ public interface BalanceAccountService {
 
     /**
      * Returns the {@link LimitedResult} of accounts ordered by accountId.
-     * 
+     *
      * @param ownerResourceId
      *            The resource ID of the owner of the interested accounts or <code>null</code> if all accounts are
      *            interested.
      * @param limit
-     *            The limit of the query. Cannot be null.
+     *            the limit of the query, cannot be <code>null</code>
      * @return The {@link LimitedResult} of accounts.
      */
     LimitedResult<BalanceAccount> findAccountsByOwnerResourceId(Long ownerResourceId, Limit limit);
@@ -90,9 +92,14 @@ public interface BalanceAccountService {
      * <li>{@link BalanceTransferService#acceptBlockedTransfer(long)}</li>
      * <li>{@link BalanceTransferService#rejectBlockedTransfer(long)}</li>
      * </ul>
-     * A transaction must be available (mandatory) before calling this method, otherwise an exception will be thrown. A
-     * deadlock could happen if this method is invoked from different places at the same time!
-     * 
+     * <p>
+     * <b>Note 1</b>: A transaction must be available (mandatory) while calling this method, otherwise an exception will
+     * be thrown!
+     * </p>
+     * <p>
+     * <b>Note 2</b>: A deadlock could happen if this method is invoked from different places at the same time!
+     * </p>
+     *
      * @param accountIds
      *            the ID of the accounts to lock
      * @return the locked account IDs

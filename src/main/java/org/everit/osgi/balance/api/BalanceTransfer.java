@@ -18,6 +18,7 @@ package org.everit.osgi.balance.api;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Calendar;
 
 public class BalanceTransfer implements Serializable {
@@ -27,7 +28,18 @@ public class BalanceTransfer implements Serializable {
      */
     private static final long serialVersionUID = -3058892777928892426L;
 
+    private static Calendar convert(final Timestamp timestamp) {
+        if (timestamp == null) {
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(timestamp);
+        return calendar;
+    }
+
     private final long transferId;
+
+    private final String transferPairId;
 
     private final Calendar createdAt;
 
@@ -51,12 +63,14 @@ public class BalanceTransfer implements Serializable {
 
     private final long resourceId;
 
-    public BalanceTransfer(final long transferId, final Calendar createdAt, final Calendar accomplishedAt,
-            final String transferCode, final BigDecimal amount, final TransferStatus transferStatus,
-            final BigDecimal lastCreditorAvailableBalance, final BigDecimal lastCreditorBlockedBalance,
-            final String notes, final long creditorAccountId, final long debtorAccountId, final long resourceId) {
+    public BalanceTransfer(final long transferId, final String transferPairId, final Calendar createdAt,
+            final Calendar accomplishedAt, final String transferCode, final BigDecimal amount,
+            final TransferStatus transferStatus, final BigDecimal lastCreditorAvailableBalance,
+            final BigDecimal lastCreditorBlockedBalance, final String notes, final long creditorAccountId,
+            final long debtorAccountId, final long resourceId) {
         super();
         this.transferId = transferId;
+        this.transferPairId = transferPairId;
         this.createdAt = createdAt;
         this.accomplishedAt = accomplishedAt;
         this.transferCode = transferCode;
@@ -68,6 +82,27 @@ public class BalanceTransfer implements Serializable {
         this.creditorAccountId = creditorAccountId;
         this.debtorAccountId = debtorAccountId;
         this.resourceId = resourceId;
+    }
+
+    public BalanceTransfer(final Long transferId, final String transferPairId, final Timestamp createdAt,
+            final Timestamp accomplishedAt, final String transferCode, final Double amount,
+            final String transferStatus, final Double lastCreditorAvailableBalance,
+            final Double lastCreditorBlockedBalance, final String notes, final Long creditorAccountId,
+            final Long debtorAccountId, final Long resourceId) {
+        this(
+                transferId,
+                transferPairId,
+                BalanceTransfer.convert(createdAt),
+                BalanceTransfer.convert(accomplishedAt),
+                transferCode,
+                BigDecimal.valueOf(amount),
+                TransferStatus.valueOf(transferStatus),
+                BigDecimal.valueOf(lastCreditorAvailableBalance),
+                BigDecimal.valueOf(lastCreditorBlockedBalance),
+                notes,
+                creditorAccountId,
+                debtorAccountId,
+                resourceId);
     }
 
     public Calendar getAccomplishedAt() {
@@ -112,6 +147,10 @@ public class BalanceTransfer implements Serializable {
 
     public long getTransferId() {
         return transferId;
+    }
+
+    public String getTransferPairId() {
+        return transferPairId;
     }
 
     public TransferStatus getTransferStatus() {

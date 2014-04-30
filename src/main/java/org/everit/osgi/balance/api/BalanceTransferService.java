@@ -24,6 +24,7 @@ import org.everit.commons.selection.LimitedResult;
 /**
  * Service interface for balance transfer management.
  */
+// TODO update javadocs
 public interface BalanceTransferService {
 
     /**
@@ -38,7 +39,7 @@ public interface BalanceTransferService {
      * accounts and opposite sign of credit amount</li>
      * <li>the balances of the accounts must be recalculated</li>
      * </ul>
-     * 
+     *
      * @param transferId
      *            The ID of the transfer to accept.
      */
@@ -53,7 +54,7 @@ public interface BalanceTransferService {
      * parameters</li>
      * <li>the balances of the creditor account must be recalculated</li>
      * </ul>
-     * 
+     *
      * @param transferCode
      *            The external code of the transfer to support filtering and grouping certain transfers.
      * @param creditorAccountId
@@ -80,7 +81,7 @@ public interface BalanceTransferService {
      * reversed accounts and opposite sign of credit amount</li>
      * <li>the balances of the accounts must be recalculated</li>
      * </ul>
-     * 
+     *
      * @param transferCode
      *            The external code of the transfer to support filtering and grouping certain transfers.
      * @param creditorAccountId
@@ -96,14 +97,16 @@ public interface BalanceTransferService {
     long createInstantTransfer(String transferCode, long creditorAccountId, long debtorAccountId,
             BigDecimal amount, String notes);
 
+    BalanceTransfer findTransferById(long transferId);
+
     /**
      * Finds the transfers based on the parameters. All primitive properties of the returned {@link BalanceTransfer}
      * instances will be returned, furthermore the {@link org.everit.balance.api.dto.Account#getAccountId() Id} property
      * of the {@link BalanceTransfer#getCreditorAccount() creditor account} and the
      * {@link BalanceTransfer#getDebtorAccount() debtor account} will also be loaded, but the further properties of the
      * accounts won't be queried.
-     * 
-     * @param transferFilter
+     *
+     * @param filter
      *            Filter parameters for listing transfers.
      * @param order
      *            The desired ordering of the result list. Cannot be null.
@@ -111,7 +114,9 @@ public interface BalanceTransferService {
      *            The {@link Limit} of the query. Cannot be null.
      * @return the transfers
      */
-    LimitedResult<BalanceTransfer> findTransfers(TransferFilter transferFilter, TransferOrder order, Limit limit);
+    LimitedResult<BalanceTransfer> findTransfers(TransferFilter filter, TransferOrder order, Limit limit);
+
+    BalanceTransfer[] findTransfersByPairId(String transferPairId);
 
     /**
      * Rejects the given transfer. The following steps must be done in one transaction:
@@ -123,7 +128,7 @@ public interface BalanceTransferService {
      * {@link org.everit.balance.api.model.TransferStatus#REJECTED}</li>
      * <li>the balances of the creditor account must be recalculated</li>
      * </ul>
-     * 
+     *
      * @param transferId
      *            The ID of the transfer to reject.
      */

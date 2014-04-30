@@ -34,13 +34,19 @@ public class BalanceAccount implements Serializable {
 
     private final BigDecimal blockedBalance;
 
-    public BalanceAccount(final long accountId, final boolean active, final BigDecimal availableBalance,
-            final BigDecimal blockedBalance) {
+    private final long ownerResourceId;
+
+    private final long resourceId;
+
+    public BalanceAccount(final long accountId, final boolean active, final double availableBalance,
+            final double blockedBalance, final long ownerResourceId, final long resourceId) {
         super();
         this.accountId = accountId;
         this.active = active;
-        this.availableBalance = availableBalance;
-        this.blockedBalance = blockedBalance;
+        this.availableBalance = BigDecimal.valueOf(availableBalance);
+        this.blockedBalance = BigDecimal.valueOf(blockedBalance);
+        this.ownerResourceId = ownerResourceId;
+        this.resourceId = resourceId;
     }
 
     public long getAccountId() {
@@ -53,6 +59,14 @@ public class BalanceAccount implements Serializable {
 
     public BigDecimal getBlockedBalance() {
         return blockedBalance;
+    }
+
+    public long getOwnerResourceId() {
+        return ownerResourceId;
+    }
+
+    public long getResourceId() {
+        return resourceId;
     }
 
     public boolean isActive() {

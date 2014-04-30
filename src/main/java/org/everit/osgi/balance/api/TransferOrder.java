@@ -22,6 +22,14 @@ package org.everit.osgi.balance.api;
 public enum TransferOrder {
 
     /**
+     * Order by transferId ascending.
+     */
+    TRANSFER_ID_ASC,
+    /**
+     * Order by transferId descending.
+     */
+    TRANSFER_ID_DESC,
+    /**
      * Order by createdAt ascending.
      */
     CREATED_ASC,
