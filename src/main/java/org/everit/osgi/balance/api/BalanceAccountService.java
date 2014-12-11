@@ -58,7 +58,7 @@ public interface BalanceAccountService {
      *
      * @param accountId
      *            The id of the account to be found.
-     * @return An {@link Account} or <code>null</code> if there is no matches.
+     * @return An {@link BalanceAccount} or <code>null</code> if there is no matches.
      */
     BalanceAccount findAccountById(long accountId);
 

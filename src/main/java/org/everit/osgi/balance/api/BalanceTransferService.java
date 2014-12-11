@@ -31,11 +31,10 @@ public interface BalanceTransferService {
      * Accepts the given transfer. The following steps must be done in one transaction:
      * <ul>
      * <li>the creditor and debtor accounts must be locked</li>
-     * <li>the status of the accepted transfer must equal to {@link org.everit.balance.api.model.TransferStatus#BLOCKED}
-     * </li>
+     * <li>the status of the accepted transfer must equal to {@link org.everit.osgi.balance.api.TransferStatus#BLOCKED}</li>
      * <li>the status of the accepted transfer must be changed to
-     * {@link org.everit.balance.api.model.TransferStatus#SUCCESSFUL}</li>
-     * <li>a new {@link org.everit.balance.api.model.TransferStatus#SUCCESSFUL} transfer must be created with reversed
+     * {@link org.everit.osgi.balance.api.TransferStatus#SUCCESSFUL}</li>
+     * <li>a new {@link org.everit.osgi.balance.api.TransferStatus#SUCCESSFUL} transfer must be created with reversed
      * accounts and opposite sign of credit amount</li>
      * <li>the balances of the accounts must be recalculated</li>
      * </ul>
@@ -46,11 +45,11 @@ public interface BalanceTransferService {
     void acceptBlockedTransfer(long transferId);
 
     /**
-     * Creates a new transfer with status {@link org.everit.balance.api.model.TransferStatus#BLOCKED}. The following
+     * Creates a new transfer with status {@link org.everit.osgi.balance.api.TransferStatus#BLOCKED}. The following
      * steps must be done in one transaction:
      * <ul>
      * <li>the creditor account must be locked</li>
-     * <li>a new {@link org.everit.balance.api.model.TransferStatus#BLOCKED} transfer must be created with the given
+     * <li>a new {@link org.everit.osgi.balance.api.TransferStatus#BLOCKED} transfer must be created with the given
      * parameters</li>
      * <li>the balances of the creditor account must be recalculated</li>
      * </ul>
@@ -71,13 +70,13 @@ public interface BalanceTransferService {
             BigDecimal amount, String notes);
 
     /**
-     * Creates two new transfer with status {@link org.everit.balance.api.model.TransferStatus#SUCCESSFUL}. The
-     * following steps must be done in one transaction:
+     * Creates two new transfer with status {@link org.everit.osgi.balance.api.TransferStatus#SUCCESSFUL}. The following
+     * steps must be done in one transaction:
      * <ul>
      * <li>the creditor and debtor accounts must be locked</li>
-     * <li>a new {@link org.everit.balance.api.model.TransferStatus#SUCCESSFUL} transfer must be created with the given
+     * <li>a new {@link org.everit.osgi.balance.api.TransferStatus#SUCCESSFUL} transfer must be created with the given
      * parameters</li>
-     * <li>another new {@link org.everit.balance.api.model.TransferStatus#SUCCESSFUL} transfer must be created with
+     * <li>another new {@link org.everit.osgi.balance.api.TransferStatus#SUCCESSFUL} transfer must be created with
      * reversed accounts and opposite sign of credit amount</li>
      * <li>the balances of the accounts must be recalculated</li>
      * </ul>
@@ -101,10 +100,10 @@ public interface BalanceTransferService {
 
     /**
      * Finds the transfers based on the parameters. All primitive properties of the returned {@link BalanceTransfer}
-     * instances will be returned, furthermore the {@link org.everit.balance.api.dto.Account#getAccountId() Id} property
-     * of the {@link BalanceTransfer#getCreditorAccount() creditor account} and the
-     * {@link BalanceTransfer#getDebtorAccount() debtor account} will also be loaded, but the further properties of the
-     * accounts won't be queried.
+     * instances will be returned, furthermore the {@link org.everit.osgi.balance.api.BalanceAccount#getAccountId() Id}
+     * property of the {@link BalanceTransfer#getCreditorAccountId() creditor account} and the
+     * {@link BalanceTransfer#getDebtorAccountId() debtor account} will also be loaded, but the further properties of
+     * the accounts won't be queried.
      *
      * @param filter
      *            Filter parameters for listing transfers.
@@ -122,10 +121,9 @@ public interface BalanceTransferService {
      * Rejects the given transfer. The following steps must be done in one transaction:
      * <ul>
      * <li>the creditor account must be locked</li>
-     * <li>the status of the rejected transfer must equal to {@link org.everit.balance.api.model.TransferStatus#BLOCKED}
-     * </li>
+     * <li>the status of the rejected transfer must equal to {@link org.everit.osgi.balance.api.TransferStatus#BLOCKED}</li>
      * <li>the status of the rejected transfer must be changed to
-     * {@link org.everit.balance.api.model.TransferStatus#REJECTED}</li>
+     * {@link org.everit.osgi.balance.api.TransferStatus#REJECTED}</li>
      * <li>the balances of the creditor account must be recalculated</li>
      * </ul>
      *
